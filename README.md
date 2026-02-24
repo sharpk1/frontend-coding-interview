@@ -1,41 +1,55 @@
-# Clever's Frontend Coding Interview
-👋 Hello!, Hola!, Witam!
+# Clever Frontend Coding Interview — Submission
 
-Thank you for taking the time to interview with Clever. This coding challenge is meant to be a _short_ exercise to see how you code on the frontend. Please don't spend more than a couple hours, and certainly don't stress. Treat it like you would any other coding task. Throw on some tunes 🎶, sit back, relax 😌, and code!
+## Overview
 
-### Requirements
-- Create a small web app using React and Typescript.
-- Our preference is with NextJs.
-- However, please use either `npm` or `yarn`.
-- It will utilize the Pexels API to pull in some photos. Details below.
-- We'd like you to create two (mobile **responsive**) pages:
-  1. Sign in
-  2. All photos
-- You can fork this repo and commit your code there. Once done, please add the following users as members so we can review:
-  - Jimmy Lien (@jlien)
-  - Nykolle Araujo (@nymalone)
-  - Ryan McCue (@rymccue)
-- We'll circle back with you and review 1:1.
+This is a small Next.js + TypeScript app that implements the two required pages (Sign in and All photos). It fetches 10 nature photos from the Pexels API, supports like/unlike, and uses a simple localStorage-backed auth flow to gate access to the photos page.
 
-### Details
-- Mocks for these pages are provided in Figma. You should have been sent an invite to access them, if not let us know.
-  - [Figma Mocks](https://www.figma.com/file/wr1seCuhlRtoFGuz1iWgyF/Frontend-Coding-Mocks?type=design&node-id=0%3A1&mode=design&t=Uw1av3TypDUDcLAd-1)
-  - We are looking for **attention to detail** when implementing these. If a font size is 14px in the mocks, please make sure it renders that way in your app.
-- There is also a logo and an icon provided (SVGs) included in this repo.
-- Pexels API Info
-  - Api Key: `Mz0iC21IFLz9HuN8ypIbJ54l8OuGnpW2IsVoQrYBEyagQXt1YeBEA7H0`
-  - Include an `Authorization` header with this value.
-  - Endpoint: https://api.pexels.com/v1/search?query=nature&per_page=10
-  - Documenation: https://www.pexels.com/api/documentation/#photos-search
-- Make the "Sign in" page functional. However, you can spoof authentication any way you'd like (eg. save a value to local storage, etc).
-- Make "All photos" require authentication to access.
-- Only need to show 10 photos on the "All photos" page. Paging is not required.
-- Photos should be like/unlikeable.
-- We want to see that you have a basic understanding of React concepts (eg. contexts, callbacks, etc.).
-- We also want to see you know how to write tests. Nothing fancy, just the basics are fine.
+## Requirements Coverage
 
-### Final Thoughts
+- **React + TypeScript**: Implemented with Next.js App Router.
+- **Pexels API**: Server route in `app/api/photos/route.ts` calls the Pexels endpoint with an `Authorization` header from env.
+- **Sign in page**: Functional form; auth is spoofed via localStorage.
+- **All photos page**: Auth-gated; redirects unauthenticated users to `/`.
+- **10 photos only**: Pexels query is set to `per_page=10`.
+- **Like/unlike**: Implemented with `LikesContext` and a toggle button.
+- **React concepts**: Contexts, hooks, callbacks, and client components.
+- **Tests**: Basic tests in `__tests__` for auth, likes, and photo card UI.
 
-Remember, please don't spend too much time on this. In fact, save a little time and **add a section to the README** outlining what else you'd do differently to make this a production ready app.
+## How to Run
 
-**Any questions**, just let us know. Send emails to <a href="mailto:nykolle.araujo@movewithclever.com">nykolle.araujo@movewithclever.com</a>. Good luck!
+Create a local env file `.env.local` with:
+
+```bash
+PEXELS_API_KEY=your_key_here
+PEXELS_URL=https://api.pexels.com/v1/search?query=nature&per_page=10
+```
+
+```bash
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000`.
+
+## Tests
+
+```bash
+npm test
+```
+
+## Key Implementation Notes
+
+- **Auth**: `AuthProvider` stores `ci_auth` and `ci_user` in localStorage.
+- **Photos**: `PhotoList` uses SWR to fetch from `/api/photos`.
+- **Likes**: `LikesProvider` keeps a `Set<number>` of liked photo IDs.
+
+## What I’d Do Next (Production-Ready Improvements)
+
+- Add server-side auth guards and session handling.
+- Add pagination, caching, and error retries for the photo list.
+- Improve accessibility (focus states, landmarks, aria labels, keyboard nav).
+- Add visual regression tests against the Figma mocks.
+- Harden empty/error states and loading skeletons.
+- Optimize images with Next.js `<Image>` and proper sizing.
+- Add analytics and monitoring for performance and errors.
+- Persist likes in storage or a backend.
