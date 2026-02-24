@@ -25,7 +25,7 @@ PEXELS_URL=https://api.pexels.com/v1/search?query=nature&per_page=10
 ```
 
 ```bash
-npm install
+pnpm install
 npm run dev
 ```
 
